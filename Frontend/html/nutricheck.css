@@ -5,6 +5,85 @@
     --secondary-color: #66BB6A;
     --surface-color: #f4f4f4;
     --shadow-color: rgba(0, 0, 0, 0.1);
+    --cursor-color: var(--primary-color);
+    --cursor-size: 20px;
+}
+
+/* Add new styles at the top after root variables */
+.top-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.user-greeting {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1000;
+    color: white;
+    animation: slideIn 0.5s ease;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 8px 16px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: slideInLeft 0.5s ease;
+}
+
+.action-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 70px; /* Accounts for fixed header */
 }
 
 :root[data-theme="dark"] {
@@ -14,6 +93,8 @@
     --secondary-color: #81C784;
     --surface-color: #2d2d2d;
     --shadow-color: rgba(0, 0, 0, 0.3);
+    --feature-bg: #333333;
+    --home-gradient: linear-gradient(to right, #2d2d2d, #1a1a1a);
 }
 
 [data-theme="dark"] {
@@ -23,6 +104,32 @@
     --secondary-color: #81C784;
     --surface-color: #2d2d2d;
     --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] #home {
+    background: var(--home-gradient);
+}
+
+[data-theme="dark"] #features {
+    background: var(--feature-bg);
+}
+
+[data-theme="dark"] #home p,
+[data-theme="dark"] #features p,
+[data-theme="dark"] #about p {
+    color: #cccccc;
+}
+
+[data-theme="dark"] .feature-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+[data-theme="dark"] #scanner {
+    background: var(--feature-bg);
+    color: var(--text-color);
 }
 
 /* General Reset */
@@ -41,12 +148,24 @@ body {
     transition: all 0.3s ease;
 }
 
+button, 
+a, 
+.feature-item,
+input[type="submit"] {
+    cursor: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='8' fill='%234CAF50' opacity='0.5'/%3E%3Ccircle cx='10' cy='10' r='4' fill='%234CAF50'/%3E%3C/svg%3E"), pointer;
+}
+
 /* Header */
 header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
     background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
     color: white;
     padding: 15px 0;
     box-shadow: 0 4px 6px var(--shadow-color);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 header .container {
@@ -85,6 +204,21 @@ header nav ul li a:hover {
     color: #ffeb3b;
 }
 
+/* Add after nav styles */
+header nav ul li span {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+header nav ul li span:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
 /* Home Section */
 #home {
     background: linear-gradient(to right, #f4f4f4, #ffffff);
@@ -96,12 +230,14 @@ header nav ul li a:hover {
     font-size: 3rem;
     margin-bottom: 20px;
     color: var(--primary-color);
+    animation: slideIn 1s ease;
 }
 
 #home p {
     font-size: 1.2rem;
     margin-bottom: 30px;
     color: #555;
+    animation: slideIn 1s ease 0.2s both;
 }
 
 #home .btn {
@@ -112,6 +248,7 @@ header nav ul li a:hover {
     border-radius: 25px;
     box-shadow: 0 4px 6px var(--shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInBlur 1s ease 0.4s both;
 }
 
 #home .btn:hover {
@@ -145,6 +282,8 @@ header nav ul li a:hover {
     text-align: center;
     animation: fadeIn 1.5s ease-in-out;
     display: block;
+    position: relative;
+    animation: fadeInBlur 0.5s ease;
 }
 
 #login h2 {
@@ -181,6 +320,7 @@ header nav ul li a:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border: 1px solid var(--primary-color);
     background: rgba(255, 255, 255, 0.3);
+    animation: glow 2s infinite;
 }
 
 #login form button {
@@ -194,12 +334,15 @@ header nav ul li a:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     font-weight: bold;
+    position: relative;
+    overflow: hidden;
 }
 
 #login form button:hover {
     transform: scale(1.05);
     background: linear-gradient(135deg, var(--secondary-color), #81C784);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    animation: pulse 1s infinite;
 }
 
 #login .signup-link {
@@ -226,6 +369,10 @@ header nav ul li a:hover {
     margin: 20px auto;
     max-width: 800px;
     box-shadow: 0 4px 6px var(--shadow-color);
+    position: relative;
+    animation: fadeInBlur 0.5s ease;
+    margin-top: 40px;
+    padding-bottom: 60px;
 }
 
 #reader {
@@ -236,6 +383,11 @@ header nav ul li a:hover {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    transition: all 0.3s ease;
+}
+
+#reader:hover {
+    box-shadow: 0 12px 24px rgba(31, 38, 135, 0.5);
 }
 
 .scanner-btn {
@@ -248,11 +400,27 @@ header nav ul li a:hover {
     cursor: pointer;
     margin: 10px;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    background-size: 200% auto;
+    background-image: linear-gradient(
+        to right,
+        var(--primary-color) 0%,
+        var(--secondary-color) 50%,
+        var(--primary-color) 100%
+    );
 }
 
 .scanner-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    background-position: right center;
+}
+
+.scanner-btn:active {
+    transform: translateY(1px);
 }
 
 #aadharTable {
@@ -270,6 +438,11 @@ header nav ul li a:hover {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+#aadharTable tr:hover {
+    background-color: rgba(var(--primary-color), 0.1);
 }
 
 #aadharTable th {
@@ -299,10 +472,15 @@ header nav ul li a:hover {
     transition: all 0.3s ease;
 }
 
+#logoutBtn:hover {
+    background: var(--secondary-color);
+    animation: pulse 1s infinite;
+}
+
 .theme-toggle {
     position: fixed;
     top: 20px;
-    right: 20px;
+    right: 200px; /* Move it left of user greeting */
     z-index: 1000;
 }
 
@@ -312,6 +490,11 @@ header nav ul li a:hover {
     font-size: 24px;
     cursor: pointer;
     padding: 8px;
+    transition: transform 0.3s ease;
+}
+
+#themeToggle:hover {
+    transform: rotate(180deg);
 }
 
 .scanner-controls {
@@ -341,6 +524,57 @@ header nav ul li a:hover {
     }
 }
 
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 0 5px var(--primary-color); }
+    50% { box-shadow: 0 0 20px var(--primary-color); }
+    100% { box-shadow: 0 0 5px var(--primary-color); }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInBlur {
+    from {
+        opacity: 0;
+        filter: blur(10px);
+    }
+    to {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
 .visible-section {
     display: block;
 }
@@ -355,13 +589,576 @@ footer {
 
 /* Add after existing styles */
 #mainContent {
+    opacity: 0;
     display: none;
+    transition: opacity 0.3s ease;
+}
+
+#mainContent.visible {
+    opacity: 1;
+    display: block;
 }
 
 /* Add display transition */
 #mainContent, #login {
     transition: opacity 0.3s ease;
 }
+
+/* Login state management */
+body.logged-in #mainContent {
+    display: block !important;
+    opacity: 1 !important;
+}
+
+body.logged-in #login {
+    display: none !important;
+}
+
+body.logged-in #logoutContainer {
+    display: block !important;
+}
+
+#mainContent {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#mainContent.visible {
+    opacity: 1;
+}
+
+/* Override any conflicting display properties */
+.hidden {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+/* Update feature items */
+.feature-item {
+    padding: 20px;
+    border-radius: 15px;
+    margin: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+    position: relative;
+    z-index: 1;
+    animation: scaleIn 0.5s ease forwards;
+    opacity: 0;
+    animation-delay: calc(var(--order) * 0.1s);
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateZ(20px);
+    transition: all 0.3s ease;
+}
+
+.feature-item h3 {
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover h3 {
+    color: var(--primary-color);
+}
+
+.feature-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), 
+                               rgba(var(--primary-color-rgb), 0.1) 0%,
+                               transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -1;
+    border-radius: 15px;
+}
+
+.feature-item:hover::before {
+    opacity: 1;
+}
+
+/* Enhanced button hover effects */
+.btn, .scanner-btn {
+    position: relative;
+    overflow: hidden;
+    background-size: 200% auto;
+    background-image: linear-gradient(
+        to right,
+        var(--primary-color) 0%,
+        var(--secondary-color) 50%,
+        var(--primary-color) 100%
+    );
+    transition: all 0.5s ease;
+}
+
+.btn:hover, .scanner-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px var(--shadow-color);
+    background-position: right center;
+    background-size: 200% auto;
+}
+
+.btn:active, .scanner-btn:active {
+    transform: translateY(1px);
+}
+
+/* Logo animation */
+#home img {
+    transition: all 0.5s ease;
+    animation: float 6s ease-in-out infinite;
+}
+
+#home img:hover {
+    transform: scale(1.05);
+}
+
+/* Scanner enhancements */
+#reader {
+    transition: all 0.3s ease;
+}
+
+#reader:hover {
+    box-shadow: 0 12px 24px rgba(31, 38, 135, 0.5);
+}
+
+/* Login form enhancements */
+#login form input:focus {
+    animation: glow 2s infinite;
+}
+
+#login form button {
+    position: relative;
+    overflow: hidden;
+}
+
+#login form button:hover {
+    animation: pulse 1s infinite;
+}
+
+/* Theme toggle enhancement */
+#themeToggle {
+    transition: transform 0.3s ease;
+}
+
+#themeToggle:hover {
+    transform: rotate(180deg);
+}
+
+/* Logout button enhancement */
+#logoutBtn:hover {
+    background: var(--secondary-color);
+    animation: pulse 1s infinite;
+}
+
+/* Table enhancements */
+#aadharTable tr {
+    transition: all 0.3s ease;
+}
+
+#aadharTable tr:hover {
+    background-color: rgba(var(--primary-color), 0.1);
+}
+
+/* Section transitions */
+section {
+    transition: all 0.5s ease;
+}
+
+section:target {
+    animation: glow 1s ease-in-out;
+}
+
+/* Navigation link enhancement */
+nav ul li a {
+    position: relative;
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #ffeb3b;
+    transition: width 0.3s ease;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+/* Update existing logged-in states */
+body.logged-in nav a[href="#login"] {
+    display: none !important;
+}
+
+/* Add smooth transitions */
+a, button, input {
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+a:active, button:active {
+    transform: scale(0.95);
+}
+
+/* Add custom selection color */
+::selection {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Enhanced focus states */
+*:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.3);
+}
+
+/* Add responsive hover effects */
+@media (hover: hover) {
+    .feature-item:hover {
+        transform: translateY(-5px) scale(1.02);
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Add this to make gradient elements more vibrant */
+@property --gradient-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+/* Add animated border for important elements */
+@keyframes gradient-rotation {
+    0% { --gradient-angle: 0deg; }
+    100% { --gradient-angle: 360deg; }
+}
+
+#scanner::before, #login::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    background: linear-gradient(var(--gradient-angle), 
+                              var(--primary-color), 
+                              var(--secondary-color));
+    border-radius: inherit;
+    animation: gradient-rotation 5s linear infinite;
+    opacity: 0.5;
+}
+
+/* Custom cursor */
+.custom-cursor {
+    width: var(--cursor-size);
+    height: var(--cursor-size);
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    transform: translate(-50%, -50%);
+}
+
+.custom-cursor.active {
+    transform: translate(-50%, -50%) scale(0.5);
+    background-color: var(--primary-color);
+}
+
+/* Section reveal animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Remove cursor related styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+    background-color: var(--bg-color);
+    overflow-x: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Update navigation styles */
+.nav-login, .nav-main {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-main.hidden {
+    display: none;
+}
+
+/* Login state management */
+body.logged-in .nav-login {
+    display: none;
+}
+
+body.logged-in .nav-main {
+    display: flex;
+}
+
+/* Remove all cursor-related styles and animations */
+.custom-cursor,
+.custom-cursor.active {
+    display: none;
+}
+
+/* Add after existing section styles */
+section {
+    scroll-margin-top: 70px; /* Accounts for fixed header */
+}
+
+.section-active {
+    animation: sectionHighlight 1s ease;
+}
+
+@keyframes sectionHighlight {
+    0% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: rgba(var(--primary-color-rgb), 0.1);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+/* Update navigation styles */
+nav ul li a.active {
+    color: #ffeb3b;
+}
+
+nav ul li a.active::after {
+    width: 100%;
+}
+
+/* Update header and navigation styles */
+header {
+    /* ...existing header styles... */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.nav-main {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-scan-btn {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.nav-scan-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.scan-icon {
+    font-size: 1.2em;
+}
+
+.user-greeting {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1000;
+    color: white;
+    animation: slideIn 0.5s ease;
+}
+
+#logoutBtn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Add responsive styles */
+@media (max-width: 768px) {
+    .nav-main {
+        gap: 10px;
+    }
+    
+    .nav-scan-btn {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+    
+    .user-greeting {
+        right: 120px;
+        font-size: 0.9em;
+        padding: 6px 12px;
+    }
+
+    .nav-scan-btn {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+
+    #logoutBtn {
+        padding: 4px 10px;
+        font-size: 0.9em;
+    }
+}
+
+/* Add new scan section styles */
+.scan-section {
+    text-align: center;
+    padding: 40px 0;
+    background: linear-gradient(to right, var(--surface-color), transparent);
+}
+
+.big-scan-btn {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.big-scan-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px var(--shadow-color);
+}
+
+.big-scan-btn .scan-icon {
+    font-size: 1.4em;
+}
+
+.scan-section.hidden {
+    display: none;
+}
+
+/* Update navigation styles */
+header nav {
+    display: flex;
+    align-items: center;
+}
+
+header nav ul {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* Increased gap between nav items */
+}
+
+.nav-main {
+    margin-right: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-left: 30px;
+}
+
+#username-display {
+    color: white;
+    font-weight: bold;
+}
+
+#logoutBtn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Remove old user greeting styles */
+.user-greeting {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    header nav ul {
+        gap: 15px;
+    }
+    
+    .user-info {
+        margin-left: 15px;
+        padding: 6px 12px;
+    }
+
+    #username-display {
+        font-size: 0.9em;
+    }
+
+    #logoutBtn {
+        padding: 4px 8px;
+        font-size: 0.9em;
+    }
+}
+
+/* ...rest of existing styles... */
 
 
 
